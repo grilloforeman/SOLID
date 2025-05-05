@@ -100,8 +100,7 @@ armazenamento).
 **Como aplicar o SRP?**
 Para aplicar o SRP, a classe RelatorioUsuario poderia ser refatorada
 em duas classes separadas:
-
-('''
+(```
 class GeradorRelatorioUsuario {
 fun gerarRelatorio(listaDeUsuarios): String {
 // Lógica para gerar o relatório
@@ -112,7 +111,7 @@ fun salvarRelatorio(conteudoDoRelatorio, nomeDoArquivo) {
 // Lógica para salvar o relatório em um arquivo
 }
 }
-''')
+```)
 Agora, cada classe tem uma única responsabilidade e um único motivo
 para mudar. Se a forma de gerar o relatório precisar ser alterada,
 apenas a classe GeradorRelatorioUsuario será modificada. Se a forma
@@ -125,7 +124,7 @@ código mais organizado, flexível e fácil de manter a longo prazo.
 ##### EM PHP.
 
 **Exemplo de Violação do SRP em PHP:**
-('''
+(``
 <?php
 class RelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios): string {
