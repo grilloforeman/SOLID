@@ -88,11 +88,13 @@ levam à modificação dessa classe.
 **Exemplo (em pseudocódigo):**
 Imagine uma classe RelatorioUsuario que tem duas responsabilidades:
 gerar um relatório de usuários e salvar esse relatório em um arquivo.
-class RelatorioUsuario
+``` class RelatorioUsuario
 { fun gerarRelatorio(listaDeUsuarios): String { // Lógica para gerar o
 relatório }
 fun salvarRelatorio(conteudoDoRelatorio, nomeDoArquivo) { // Lógica
 para salvar o relatório em um arquivo } }
+```
+
 Essa classe viola o SRP porque tem dois motivos para mudar: a lógica
 de geração do relatório pode mudar (formato, informações incluídas) e
 a forma como o relatório é salvo pode mudar (tipo de arquivo, local de
@@ -100,7 +102,7 @@ armazenamento).
 **Como aplicar o SRP?**
 Para aplicar o SRP, a classe RelatorioUsuario poderia ser refatorada
 em duas classes separadas:
-(```
+```
 class GeradorRelatorioUsuario {
 fun gerarRelatorio(listaDeUsuarios): String {
 // Lógica para gerar o relatório
@@ -111,7 +113,7 @@ fun salvarRelatorio(conteudoDoRelatorio, nomeDoArquivo) {
 // Lógica para salvar o relatório em um arquivo
 }
 }
-```)
+```
 Agora, cada classe tem uma única responsabilidade e um único motivo
 para mudar. Se a forma de gerar o relatório precisar ser alterada,
 apenas a classe GeradorRelatorioUsuario será modificada. Se a forma
@@ -124,7 +126,7 @@ código mais organizado, flexível e fácil de manter a longo prazo.
 ##### EM PHP.
 
 **Exemplo de Violação do SRP em PHP:**
-(``
+```
 <?php
 class RelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios): string {
@@ -155,9 +157,9 @@ $relatorio = $relatorioUsuario->gerarRelatorio($usuarios);
 echo $relatorio;
 $relatorioUsuario->salvarRelatorio($relatorio, 'relatorio_usuarios.txt');
 ?>
-''')
+```
 ## Exemplo de Aplicação do SRP em PHP:
-('''
+```
 <?php
 class GeradorRelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios): string {
@@ -195,7 +197,7 @@ $persistenciaRelatorio->salvarRelatorio($relatorio,
 'relatorio_usuarios.txt');
 ?>
 
-''')
+```
 Agora, cada classe tem uma única responsabilidade e um único motivo
 para mudar. Se a forma de gerar o relatório precisar ser alterada,
 apenas a classe GeradorRelatorioUsuario será modificada. Se a forma
@@ -220,7 +222,7 @@ A solução para aplicar o OCP seria usar **abstração**. Poderíamos criar
 uma interface ou uma classe abstrata para definir o contrato de um
 gerador de relatórios e, em seguida, criar classes concretas para cada
 formato específico.
-('''
+```
 interface GeradorRelatorio {
 fun gerar(listaDeUsuarios): String
 }
@@ -255,7 +257,9 @@ val relatorioCSV = servicoCSV.gerarRelatorio(usuarios)
 val geradorPDF = GeradorRelatorioPDF()
 val servicoPDF = ServicoDeRelatorio(geradorPDF)
 val relatorioPDF = servicoPDF.gerarRelatorio(usuarios)
-''')
+```
+
+
 Nesse exemplo, a classe ServicoDeRelatorio está aberta para
 trabalhar com diferentes tipos de geradores de relatório (extensão),
 sem precisar ser modificada quando um novo formato é adicionado.
@@ -263,7 +267,7 @@ Basta criar uma nova classe que implementa a interface
 GeradorRelatorio.
 **Exemplo de Violação do OCP em PHP:**
 
-('''
+```
 <?php
 class GeradorRelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios, string
@@ -303,8 +307,8 @@ echo $geradorRelatorio->gerarRelatorio($usuarios, 'csv');
 MODIFICAR a classe GeradorRelatorioUsuario.
 // Isso viola o Princípio Aberto/Fechado.
 ?>
+```
 
-''')
 Neste exemplo, a classe GeradorRelatorioUsuario é responsável por
 gerar relatórios em diferentes formatos. Se precisarmos adicionar um
 novo formato (como HTML), teremos que **modificar** a classe,
@@ -313,7 +317,7 @@ pois a classe não está fechada para modificação para estender sua
 funcionalidade.
 **Exemplo de Aplicação do OCP em PHP:**
 
-('''
+```
 <?php
 interface GeradorRelatorio {
 public function gerar(array $listaDeUsuarios): string;
@@ -386,7 +390,7 @@ que implementa GeradorRelatorio.
 
 
  ?>
-´)
+```
 ## Princípio da Substituição de Liskov (LSP)
 
 O **Princípio da Substituição de Liskov (LSP)** , a terceira letra do
@@ -418,7 +422,7 @@ superclasse.
 **Exemplo de violação do LSP (em pseudocódigo):**
 Imagine uma classe base Retangulo com métodos para definir largura e
 altura, e calcular a área.
-('''
+```
 class Retangulo {
 var largura: Inteiro
 var altura: Inteiro
@@ -432,11 +436,11 @@ fun calcularArea(): Inteiro {
 return largura * altura
 }
 }
-''')
+```
 
 Agora, imagine uma subclasse Quadrado que herda de Retangulo, pois
 um quadrado "é um" retângulo com lados iguais.
-('''
+```
 class Quadrado : Retangulo {
 override fun definirLargura(lado: Inteiro) {
 super.definirLargura(lado)
@@ -467,7 +471,7 @@ quadrado.definirAltura(10)
 aumentarLargura(quadrado)
 imprimir(quadrado.calcularArea()) // Saída: 225 (inesperado - a altura
 também mudou)
-')
+```
 Nesse exemplo, ao passar um objeto Quadrado para a função
 aumentarLargura, o comportamento esperado para um Retangulo (onde
 apenas a largura aumenta) não é mantido. O Quadrado altera tanto a
@@ -491,6 +495,7 @@ robustos e extensíveis, onde a herança é utilizada de forma correta e os
 diferentes tipos podem ser tratados de maneira polimórfica sem causar
 efeitos colaterais inesperados.
 **Exemplo de Violação do LSP em PHP:**
+```
 <?php
 class Retangulo {
 protected $largura;
@@ -556,6 +561,7 @@ echo "Quadrado original: Lado = ". $quadado->obterLargura(). ", Área =
 aumentarLargura($quadrado); // Saída inesperada: Largura aumentada
 para: 15, Área agora é: 225 (a altura também mudou)
 ?>
+```
 Neste exemplo em PHP, a função aumentarLargura espera receber
 um objeto do tipo Retangulo e aumentar apenas sua largura. No
 entanto, quando um objeto da subclasse Quadrado é passado, a
@@ -571,6 +577,7 @@ interface para formas geométricas que possuem uma área calculável, e
 
 talvez tratar retângulos e quadrados de maneiras distintas se suas
 propriedades de manipulação são fundamentalmente diferentes.
+```
 <?php
 interface FormaGeometrica {
 public function calcularArea(): int;
@@ -631,6 +638,8 @@ imprimirArea($quadrado); // Saída: A área da forma é: 100
 // A função aumentarLargura não faz mais sentido nesse contexto,
 // pois a manipulação de um Quadrado é diferente.
 ?>
+
+```
 Nessa refatoração, Retangulo e Quadrado implementam uma interface
 comum FormaGeometrica que define o contrato para calcular a área. A
 manipulação das dimensões (largura, altura, lado) é feita de forma
@@ -652,6 +661,7 @@ Agora, vamos abordar o **Princípio da Segregação da Interface (ISP)** :
 forçado a depender de métodos que não utiliza.
 Imagine que adicionamos uma nova funcionalidade à nossa interface
 GeradorRelatorio: a capacidade de pré-visualizar o relatório na tela.
+```
 interface GeradorRelatorio {
 fun gerar(listaDeUsuarios): String
 fun preVisualizar(): void // Nova funcionalidade
@@ -669,17 +679,17 @@ class GeradorRelatorioPDF : GeradorRelatorio {
 override fun gerar(listaDeUsuarios): String {
 
 
-##### // ...
+// ...
 
-##### }
+}
 
 override fun preVisualizar() {
 // Lógica para pré-visualizar o PDF
 }
 }
-
+```
 ### EM PHP
-
+```
 <?php
 interface GeradorRelatorio {
 public function gerar(array $listaDeUsuarios): string;
@@ -748,7 +758,7 @@ echo $geradorHTML->gerarRelatorio($usuarios);
 que implementa GeradorRelatorio.
 // A classe ServicoDeRelatorio não precisa ser modificada.
 ?>
-
+```
 ## Princípio da Inversão de Dependência (DIP)
 
 O Princípio da Inversão de Dependência (DIP). Vamos explorá-lo com
@@ -788,7 +798,7 @@ fun obterClientePorId(id: Inteiro): Cliente {
 
 
 ## }
-
+```
 class ServicoDeCliente {
 var repositorio: RepositorioDeClientes
 fun ServicoDeCliente() {
@@ -839,7 +849,7 @@ return repositorio.obterClientePorId(id)
 ## }
 
 ## }
-
+```
 // Uso:
 var mysqlRepo = new RepositorioDeClientesMySQL()
 var clienteService1 = new ServicoDeCliente(mysqlRepo)
@@ -860,6 +870,7 @@ torna o sistema mais flexível.
 
 
 **Exemplo em PHP (Violação do DIP):**
+```
 <?php
 class MySQLClienteRepository {
 public function getClientePorId(int $id): array {
@@ -885,11 +896,13 @@ return $this->clienteRepository->getClientePorId($id);
 $clienteService = new ClienteService();
 $cliente = $clienteService->buscarCliente(1);
 print_r($cliente);
+```
 // Se quisermos usar outro banco de dados, precisamos modificar
 ClienteService.
 
 
 **Exemplo em PHP (Aplicação do DIP):**
+```
 <?php
 interface ClienteRepositoryInterface {
 public function getClientePorId(int $id): array;
@@ -929,6 +942,8 @@ $postgresRepo = new PostgreSQLClienteRepository();
 $clienteService2 = new ClienteService($postgresRepo);
 $cliente2 = $clienteService2->buscarCliente(2);
 print_r($cliente2);
+
+```
 // ClienteService não se importa com a implementação específica do
 repositório.
 No exemplo PHP que aplica o DIP, a classe ClienteService depende de
