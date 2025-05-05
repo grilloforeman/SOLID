@@ -101,7 +101,7 @@ armazenamento).
 Para aplicar o SRP, a classe RelatorioUsuario poderia ser refatorada
 em duas classes separadas:
 
-('
+('''
 class GeradorRelatorioUsuario {
 fun gerarRelatorio(listaDeUsuarios): String {
 // Lógica para gerar o relatório
@@ -112,7 +112,7 @@ fun salvarRelatorio(conteudoDoRelatorio, nomeDoArquivo) {
 // Lógica para salvar o relatório em um arquivo
 }
 }
-')
+''')
 Agora, cada classe tem uma única responsabilidade e um único motivo
 para mudar. Se a forma de gerar o relatório precisar ser alterada,
 apenas a classe GeradorRelatorioUsuario será modificada. Se a forma
@@ -125,7 +125,7 @@ código mais organizado, flexível e fácil de manter a longo prazo.
 ##### EM PHP.
 
 **Exemplo de Violação do SRP em PHP:**
-('
+('''
 <?php
 class RelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios): string {
@@ -156,9 +156,9 @@ $relatorio = $relatorioUsuario->gerarRelatorio($usuarios);
 echo $relatorio;
 $relatorioUsuario->salvarRelatorio($relatorio, 'relatorio_usuarios.txt');
 ?>
-')
+''')
 ## Exemplo de Aplicação do SRP em PHP:
-('
+('''
 <?php
 class GeradorRelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios): string {
@@ -196,7 +196,7 @@ $persistenciaRelatorio->salvarRelatorio($relatorio,
 'relatorio_usuarios.txt');
 ?>
 
-')
+''')
 Agora, cada classe tem uma única responsabilidade e um único motivo
 para mudar. Se a forma de gerar o relatório precisar ser alterada,
 apenas a classe GeradorRelatorioUsuario será modificada. Se a forma
@@ -221,7 +221,7 @@ A solução para aplicar o OCP seria usar **abstração**. Poderíamos criar
 uma interface ou uma classe abstrata para definir o contrato de um
 gerador de relatórios e, em seguida, criar classes concretas para cada
 formato específico.
-('
+('''
 interface GeradorRelatorio {
 fun gerar(listaDeUsuarios): String
 }
@@ -256,7 +256,7 @@ val relatorioCSV = servicoCSV.gerarRelatorio(usuarios)
 val geradorPDF = GeradorRelatorioPDF()
 val servicoPDF = ServicoDeRelatorio(geradorPDF)
 val relatorioPDF = servicoPDF.gerarRelatorio(usuarios)
-')
+''')
 Nesse exemplo, a classe ServicoDeRelatorio está aberta para
 trabalhar com diferentes tipos de geradores de relatório (extensão),
 sem precisar ser modificada quando um novo formato é adicionado.
@@ -264,7 +264,7 @@ Basta criar uma nova classe que implementa a interface
 GeradorRelatorio.
 **Exemplo de Violação do OCP em PHP:**
 
-('
+('''
 <?php
 class GeradorRelatorioUsuario {
 public function gerarRelatorio(array $listaDeUsuarios, string
@@ -305,7 +305,7 @@ MODIFICAR a classe GeradorRelatorioUsuario.
 // Isso viola o Princípio Aberto/Fechado.
 ?>
 
-')
+''')
 Neste exemplo, a classe GeradorRelatorioUsuario é responsável por
 gerar relatórios em diferentes formatos. Se precisarmos adicionar um
 novo formato (como HTML), teremos que **modificar** a classe,
@@ -314,7 +314,7 @@ pois a classe não está fechada para modificação para estender sua
 funcionalidade.
 **Exemplo de Aplicação do OCP em PHP:**
 
-('
+('''
 <?php
 interface GeradorRelatorio {
 public function gerar(array $listaDeUsuarios): string;
@@ -419,7 +419,7 @@ superclasse.
 **Exemplo de violação do LSP (em pseudocódigo):**
 Imagine uma classe base Retangulo com métodos para definir largura e
 altura, e calcular a área.
-('
+('''
 class Retangulo {
 var largura: Inteiro
 var altura: Inteiro
@@ -433,11 +433,11 @@ fun calcularArea(): Inteiro {
 return largura * altura
 }
 }
-')
+''')
 
 Agora, imagine uma subclasse Quadrado que herda de Retangulo, pois
 um quadrado "é um" retângulo com lados iguais.
-('
+('''
 class Quadrado : Retangulo {
 override fun definirLargura(lado: Inteiro) {
 super.definirLargura(lado)
